@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mobile"
+        applicationId "com.appgobarber"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -218,9 +218,8 @@ task copyDownloadableDepsToLibs(type: Copy) {
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
-
 project.ext.vectoricons = [
-    iconFontNames: [ 'Feather.ttf' ]
-]
+  iconFontNames: ['Feather.ttf']
+];
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
