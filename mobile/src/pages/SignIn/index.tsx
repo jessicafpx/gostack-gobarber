@@ -1,13 +1,18 @@
 import React, { useCallback, useRef } from 'react';
 import {
-  Image, View, ScrollView, TextInput, Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  View,
+  ScrollView,
+  TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
-import * as Yup from 'yup';
-
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
 
 import { useAuth } from '../../hooks/auth';
 
@@ -16,10 +21,15 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import logo from '../../assets/logo.png';
+import logoImg from '../../assets/logo.png';
 
 import {
-  Container, Title, ForgotPassword, ForgotPasswordText, CreateAccountButton, CreateAccountButtonText,
+  Container,
+  Title,
+  ForgotPassword,
+  ForgotPasswordText,
+  CreateAccountButton,
+  CreateAccountButtonText,
 } from './styles';
 
 interface SignInFormData {
@@ -30,6 +40,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
   const navigation = useNavigation();
 
   const { signIn } = useAuth();
@@ -39,7 +50,6 @@ const SignIn: React.FC = () => {
       try {
         formRef.current?.setErrors({});
 
-        // criar um schema que fala qual o formato dos dados recebidos:
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('E-mail obrigatório')
@@ -48,7 +58,7 @@ const SignIn: React.FC = () => {
         });
 
         await schema.validate(data, {
-          abortEarly: false, // retorna todos os erros de uma vez
+          abortEarly: false,
         });
 
         await signIn({
@@ -59,7 +69,6 @@ const SignIn: React.FC = () => {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
 
-          // ? = vê se a variável existe pra depois chamar o setErrors
           formRef.current?.setErrors(errors);
 
           return;
@@ -76,52 +85,60 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ flex: 1 }}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled
       >
-        <Container>
-          <Image source={logo} />
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ flex: 1 }}
+        >
+          <Container>
+            <Image source={logoImg} />
 
-          <View>
-            <Title>Faça seu logon</Title>
-          </View>
+            <View>
+              <Title>Faça seu logon</Title>
+            </View>
 
-          <Form onSubmit={handleSignIn} ref={formRef}>
-            <Input
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              name="email"
-              icon="mail"
-              placeholder="E-mail"
-              returnKeyType="next"
-            />
-            <Input
-              ref={passwordInputRef}
-              name="password"
-              icon="lock"
-              placeholder="Senha"
-              secureTextEntry
-              returnKeyType="send"
-              onSubmitEditing={() => {
-                formRef.current?.submitForm();
-              }}
-            />
+            <Form ref={formRef} onSubmit={handleSignIn}>
+              <Input
+                name="email"
+                icon="mail"
+                placeholder="E-mail"
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  passwordInputRef.current?.focus();
+                }}
+              />
+              <Input
+                ref={passwordInputRef}
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
 
-          </Form>
-          <Button onPress={() => { formRef.current?.submitForm(); }}>Entrar</Button>
+              <Button onPress={() => formRef.current?.submitForm()}>
+                Entrar
+              </Button>
+            </Form>
 
-          <ForgotPassword>
-            <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
-          </ForgotPassword>
-
-        </Container>
-      </ScrollView>
+            <ForgotPassword onPress={() => { }}>
+              <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
+            </ForgotPassword>
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <CreateAccountButton onPress={() => navigation.navigate('SignUp')}>
-        <Icon name="log-in" size={20} color="#ff9900" />
-        <CreateAccountButtonText>Criar uma conta</CreateAccountButtonText>
+        <Icon name="log-in" size={20} color="#ff9000" />
+        <CreateAccountButtonText>Criar conta</CreateAccountButtonText>
       </CreateAccountButton>
     </>
   );
