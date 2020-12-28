@@ -3,12 +3,12 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'mobile' do
+target 'appgobarber' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'mobileTests' do
+  target 'appgobarberTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -20,14 +20,5 @@ target 'mobile' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'mobile-tvOS' do
-  # Pods for mobile-tvOS
-
-  target 'mobile-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
