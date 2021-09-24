@@ -11,7 +11,7 @@ This is a project developed during the Rocketseat's GoStack bootcamp. It is an a
 
 ## 📝 Project
 A RESTfull API was used to serve the data, giving flexibility to distribute the application on multiple platforms and a SPA (Single Page Application) on the web front end to optimize performance and guarantee the best user experience.
-
+ 
 ## ⚙️ Back-end
 
 ### Technologies
