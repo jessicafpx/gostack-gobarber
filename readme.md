@@ -102,4 +102,4 @@ The application layout is available on the [Figma](https://www.figma.com/file/BX
 
 ---
 
-##### <p align="center"> <strong> < developed by <a href="github.com/jessicafpx"> @jessicafpx</a> /> </strong> 👋
+##### <p align="center"> <strong> <developed by <a href="github.com/jessicafpx"> @jessicafpx</a> /> </strong> 👋
